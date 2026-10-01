@@ -1,0 +1,26 @@
+# Render Infrastructure as Code (Blueprint)
+# Docs: https://render.com/docs/blueprint-spec
+version: "1"
+
+services:
+  - type: web
+    name: goodsdemo-backend
+    runtime: node
+    plan: free
+    region: oregon
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGODB_URI
+        sync: false # Set in Render Dashboard or will prompt during blueprint setup
+      - key: JWT_SECRET
+        generateValue: true # Render automatically generates a cryptographically secure secret
+      - key: JWT_EXPIRES_IN
+        value: 7d
